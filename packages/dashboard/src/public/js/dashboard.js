@@ -130,4 +130,16 @@ selectElement.addEventListener("change", (event) => {
   htmx.trigger("#dashboard-stats", "refresh");
 });
 
-setInterval(refreshGraph, 1000);
+async function refreshAndPoll(){
+  try{
+    await refreshGraph();
+  }
+  catch(ex){
+    console.error(ex);
+  }
+  finally{
+    setTimeout(refreshAndPoll, 1000);
+  }
+}
+
+refreshAndPoll();
